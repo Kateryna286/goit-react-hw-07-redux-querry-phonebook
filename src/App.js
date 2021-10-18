@@ -1,6 +1,6 @@
 import React from 'react';
 import ContactsList from './ContactList/ContactsList';
-import Filter from './Filter/Filter';
+//import Filter from './Filter/Filter';
 import Form from './Forms/AddContactForm';
 import './App.css';
 
@@ -13,7 +13,7 @@ function App() {
       <div className="contactsContainer">
         <div className="contacts">
           <h2>Contacts</h2>
-          <Filter />
+          {/* <Filter /> */}
           <ContactsList />
         </div>
       </div>

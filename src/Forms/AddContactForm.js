@@ -1,46 +1,22 @@
-import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { contactsOperations, contactsSelectors } from 'Redux/contacts/';
+import { useCreateContactMutation } from 'Redux/contacts/cotactsSlice';
 
 export default function Form() {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
-
-  const items = useSelector(contactsSelectors.getItems);
-  const dispatch = useDispatch();
-
-  const handleChange = event => {
-    const { name, value } = event.target;
-
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        return;
-    }
-  };
+  const [createContact] = useCreateContactMutation();
 
   const handleSubmit = event => {
     event.preventDefault();
 
-    if (items.some(item => item.name === name)) {
-      alert(`${name} already exist in contact list`);
-      return;
-    }
+    const name = event.currentTarget.elements.name.value;
+    const number = event.currentTarget.elements.number.value;
 
-    dispatch(contactsOperations.addContact({ name, number }));
+    createContact({ name, number });
 
-    resetForm();
-  };
+    event.currentTarget.reset();
 
-  const resetForm = () => {
-    setName('');
-    setNumber('');
+    // if (items.some(item => item.name === name)) {
+    //   alert(`${name} already exist in contact list`);
+    //   return;
+    // }
   };
 
   return (
@@ -53,8 +29,8 @@ export default function Form() {
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
           required
-          value={name}
-          onChange={handleChange}
+          //value="name"
+          //onChange={handleChange}
         />
       </label>
       <label>
@@ -65,8 +41,8 @@ export default function Form() {
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
           required
-          value={number}
-          onChange={handleChange}
+          //value="number"
+          //onChange={handleChange}
         />
       </label>
       <button type="submit" className="button">
